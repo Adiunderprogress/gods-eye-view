@@ -18,7 +18,11 @@ const REPO_ROOT = fileURLToPath(new URL('..', import.meta.url))
   .replace(/\\/g, '/')
   .replace(/\/$/, '');
 
-const REPO_ROOT_GLOB = REPO_ROOT.replace(/[()[\]{}*?!+@|]/g, '\\$&');
+export function escapeFsDenyPath(path) {
+  return path.replace(/[()[\]{}*?!+@|]/g, '\\$&');
+}
+
+const REPO_ROOT_GLOB = escapeFsDenyPath(REPO_ROOT);
 
 /**
  * Content-Security-Policy for every document the dev/preview server serves.
