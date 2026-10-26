@@ -26,6 +26,10 @@ import { readResponseTextCapped } from '../common/http.js';
 export function celestrakProxy() {
   const TLE_TTL_MS = 6 * 3600_000;
   const CACHE_DIR = path.join(process.cwd(), '.gev-cache');
+  const FALLBACK_DIR = path.join(
+    path.dirname(new URL(import.meta.url).pathname),
+    'fallback',
+  );
   const groups = new Set([
     'stations',
     'visual',
@@ -50,6 +54,14 @@ export function celestrakProxy() {
         return parsed;
     } catch {
       /* no disk cache yet */
+    }
+    try {
+      const fallbackPath = path.join(FALLBACK_DIR, `celestrak-${group}.json`);
+      const parsed = JSON.parse(await fsp.readFile(fallbackPath, 'utf8'));
+      if (typeof parsed?.body === 'string' && Number.isFinite(parsed?.at))
+        return parsed;
+    } catch {
+      /* no fallback either */
     }
     return null;
   }
@@ -172,7 +184,8 @@ export function celestrakProxy() {
                 if (Date.now() >= cooldownUntil)
                   cooldownUntil = Date.now() + 60000;
                 console.warn(
-                  '[celestrak-proxy] refresh failed — serving cache if any',
+                  `[celestrak-proxy] refresh failed for ${group} — serving cache if any:`,
+                  err?.message || err,
                 );
                 return null;
               })

@@ -18,7 +18,8 @@ export function createStandaloneTools(options) {
     },
     ...options,
     voice: {
-      supportedProviders: ['openai', 'gemini'],
+      defaultProvider: 'gemini',
+      supportedProviders: ['gemini', 'openai'],
       toolCatalog: loadToolCatalog,
       ...options?.voice,
     },
