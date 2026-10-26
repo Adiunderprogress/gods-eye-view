@@ -13,12 +13,20 @@ import { admitSameSiteRequest } from '../../../src/localRequestGate.mjs';
  * @returns {boolean} True when a 403 was sent.
  */
 export function admitSameSite(req, res) {
+  const allowProxy = Boolean(
+    process.env.RENDER ||
+    process.env.GEV_ALLOWED_HOSTS ||
+    process.env.NODE_ENV === 'production',
+  );
   const verdict = admitSameSiteRequest({
     hostHeader: req.headers?.host,
-    protocol: req.socket?.encrypted ? 'https:' : 'http:',
+    protocol:
+      req.socket?.encrypted || req.headers?.['x-forwarded-proto'] === 'https'
+        ? 'https:'
+        : 'http:',
     origin: req.headers?.origin,
     secFetchSite: req.headers?.['sec-fetch-site'],
-    proxyHeaders: req.headers || {},
+    proxyHeaders: allowProxy ? {} : req.headers || {},
   });
   if (verdict.ok) return false;
   res.statusCode = verdict.status;

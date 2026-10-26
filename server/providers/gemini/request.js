@@ -21,14 +21,22 @@ export function isGeminiRequestOriginAllowed(
     /[\s/?#@\\]/.test(host)
   )
     return false;
-  const protocol = req.socket?.encrypted ? 'https:' : 'http:';
+  const allowProxy = Boolean(
+    process.env.RENDER ||
+    process.env.GEV_ALLOWED_HOSTS ||
+    process.env.NODE_ENV === 'production',
+  );
+  const protocol =
+    req.socket?.encrypted || req.headers?.['x-forwarded-proto'] === 'https'
+      ? 'https:'
+      : 'http:';
   if (
     !admitSameSiteRequest({
       hostHeader: host,
       protocol,
       origin,
       secFetchSite: req.headers?.['sec-fetch-site'],
-      proxyHeaders: req.headers || {},
+      proxyHeaders: allowProxy ? {} : req.headers || {},
     }).ok
   )
     return false;
