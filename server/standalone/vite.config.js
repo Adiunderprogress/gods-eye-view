@@ -29,13 +29,16 @@ export default defineConfig(({ command, mode }) => {
     googleApiKey: process.env.GOOGLE_MAPS_API_KEY,
     cesiumToken: process.env.CESIUM_ION_TOKEN,
     mapillaryToken: process.env.MAPILLARY_CLIENT_TOKEN,
-    host: process.env.HOST,
+    host: process.env.HOST || (process.env.RENDER ? '0.0.0.0' : undefined),
     port: process.env.PORT,
-    allowedHosts: resolveAllowedHosts(
-      [process.env.GEV_ALLOWED_HOSTS, process.env.RENDER_EXTERNAL_HOSTNAME]
-        .filter(Boolean)
-        .join(','),
-    ),
+    allowedHosts:
+      process.env.RENDER || process.env.GEV_ALLOWED_HOSTS === 'all'
+        ? true
+        : resolveAllowedHosts(
+            [process.env.GEV_ALLOWED_HOSTS, process.env.RENDER_EXTERNAL_HOSTNAME]
+              .filter(Boolean)
+              .join(','),
+          ),
     command,
   });
 });
