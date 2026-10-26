@@ -24,7 +24,10 @@ export function createGeminiTokenHandler({
   resolveModel = () =>
     process.env.GEMINI_LIVE_MODEL || GEMINI_LIVE_MODEL_DEFAULT,
   resolveHost = () => process.env.HOST,
-  resolveAllowedHosts = () => process.env.GEV_ALLOWED_HOSTS,
+  resolveAllowedHosts = () =>
+    [process.env.GEV_ALLOWED_HOSTS, process.env.RENDER_EXTERNAL_HOSTNAME]
+      .filter(Boolean)
+      .join(','),
   resolveRateLimit = () => process.env.GEV_RATELIMIT_GEMINI_PER_MIN ?? '30',
   now = Date.now,
   timeoutMs = 15_000,
