@@ -3,8 +3,8 @@ services:
     name: gods-eye-view
     runtime: node
     plan: free
-    buildCommand: npm ci
-    startCommand: npm run dev -- --host 0.0.0.0
+    buildCommand: npm ci && npm run build
+    startCommand: npm run preview -- --host 0.0.0.0
     envVars:
       - key: NODE_VERSION
         value: 24.14.0
