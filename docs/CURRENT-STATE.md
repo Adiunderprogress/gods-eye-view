@@ -4,6 +4,12 @@ Docker Compose mounts the checkout with the shared SELinux `:z` label so
 containers can read it on enforcing SELinux hosts. The separate image-owned
 `node_modules` volume and loopback-only port publishing remain unchanged.
 
+The HUD's LAT/LON degrees-minutes-seconds readout rounds the coordinate once, to
+hundredths of a second, and then splits it. A value within 0.005" of the next
+whole minute carries into the minutes and degrees, so `-122.35` reads
+`122°21'00.00"W` rather than `122°20'60.00"W`. The field widths and hemisphere
+letters are unchanged.
+
 Aircraft detection candidates reuse normalized display text until callsign or
 registration changes, including in-place enrichment. Each candidate resolves its
 fleet model once per collection. Positions, model ownership and tracked-aircraft
