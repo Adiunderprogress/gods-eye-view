@@ -6,7 +6,11 @@ import { rm, writeFile } from 'node:fs/promises';
 import { request } from 'node:http';
 import path from 'node:path';
 import { build, createServer, preview } from 'vite';
-import { BROWSER_CSP, createBrowserViteConfig, escapeFsDenyPath } from '../../build/vite.js';
+import {
+  BROWSER_CSP,
+  createBrowserViteConfig,
+  escapeFsDenyPath,
+} from '../../build/vite.js';
 import standaloneConfig, * as compatibility from '../../vite.config.js';
 import * as providers from '../../server/providers/local.js';
 import { apiNotFoundPlugin } from '../../server/standalone/api-not-found.js';
