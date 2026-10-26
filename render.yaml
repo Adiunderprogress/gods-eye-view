@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: gods-eye-view
+    runtime: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: npm run dev -- --host 0.0.0.0
+    envVars:
+      - key: NODE_VERSION
+        value: 24.14.0
+      - key: HOST
+        value: 0.0.0.0
+      - key: GEV_ALLOWED_HOSTS
+        value: .onrender.com
+      - key: CESIUM_ION_TOKEN
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
