@@ -6228,3 +6228,12 @@ when their footprints touch or contain one another, never across a seam toleranc
 - `scripts/qa-form-fields.mjs` exercises native selections, number validity,
   calibration commit/cancel and stale-camera/disposal guards against an installed
   controller with fixture ports, plus default/Cyber and narrow translated layouts.
+
+## Docker health reporting
+
+The Docker image probes its local HTTP root with Node every 30 seconds, using
+the launcher's parsed `PORT` (default 4173). A successful HTTP response marks
+the container healthy. Checks time out after 10 seconds, with a 30-second
+startup grace period and three consecutive failures before reporting unhealthy.
+This reports app HTTP availability, not individual provider health, and does not
+configure automatic restarts.
