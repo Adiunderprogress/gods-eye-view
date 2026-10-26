@@ -183,7 +183,7 @@ export function createBrowserViteConfig({
       // A wildcard bind only chooses interfaces; it never disables Vite's
       // Host-header check. LAN hostnames are added explicitly (see
       // build/allowedHosts.js); IP addresses are always accepted.
-      allowedHosts: [...allowedHosts],
+      allowedHosts: Array.isArray(allowedHosts) ? [...allowedHosts] : allowedHosts,
       fs: {
         deny: [
           '.env',
