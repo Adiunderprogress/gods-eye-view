@@ -16,3 +16,11 @@ services:
         sync: false
       - key: GEMINI_API_KEY
         sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: AISSTREAM_API_KEY
+        sync: false
+      - key: FIRMS_MAP_KEY
+        sync: false
+      - key: MAPILLARY_CLIENT_TOKEN
+        sync: false
